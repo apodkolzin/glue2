@@ -225,9 +225,15 @@ class UnitWriter {
 
 class StagesWrapper implements IHierarchyNode {
     def Object obj;
+    def static map = [:]
+    def int code = 0
 
     StagesWrapper(Object obj) {
         this.obj = obj
+        def key = getHierarchyParent().getDisplayableTitle()
+        code = map.getOrDefault(key, code)
+        map[key] = code + 1
+
     }
 
     @Override
@@ -244,6 +250,8 @@ class StagesWrapper implements IHierarchyNode {
 
     @Override
     String getDisplayableTitle() throws FxException {
+        if (obj instanceof ActionBase)
+            return code
         if (obj instanceof ICoreCatalog || obj instanceof ICoreCatalogItem)
             return obj.code
         if (obj instanceof CCAMStage)
@@ -271,8 +279,8 @@ def List<Unit> listStages(){
     helper.select("from ScriptedAction where script is not null").collect{ScriptedAction item->
         def unit = new Unit()
         def path = unit.path(new StagesWrapper(item))
-        unit.id = "stages:" + path[0]
-        unit.name = path[0]
+        unit.name = path[0] + "_" + path[1] + "_" + path[2]
+        unit.id = "stages:" + unit.name
         path.remove(0)
         path.add("Категории")
         unit.path = path
