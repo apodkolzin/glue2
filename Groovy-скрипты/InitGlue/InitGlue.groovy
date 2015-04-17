@@ -264,7 +264,7 @@ class UnitWriter
 
     private def void create(Object obj, String ext, String ref) {
         if (StringUtils.isEmpty(ref))
-            creator.write(obj, "groovy")
+            creator.write(obj, ext)
         else
             res = [unit.id(), ref]
 
