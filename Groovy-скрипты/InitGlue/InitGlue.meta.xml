@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Meta>
+    <id>scripts:InitGlue</id>
+    <title>Инициализация репозитория скриптов и шаблонов Glue</title>
+    <keywords>glue</keywords>
+    <keywords>Groovy-скрипты</keywords>
+</Meta>
