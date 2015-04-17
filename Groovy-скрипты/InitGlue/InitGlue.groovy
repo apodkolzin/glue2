@@ -273,6 +273,7 @@ def List<Unit> listStages(){
     def name = {String key ->
         def code = map.getOrDefault(key, 0)
         map[key] = code + 1
+        key + "_" + code
     }
 
     helper.select("from ScriptedAction where script is not null").collect{ScriptedAction item->
