@@ -227,26 +227,29 @@ class StagesWrapper implements IHierarchyNode {
     def Object obj;
     def static map = [:]
     def int code = 0
+    def parent
 
     StagesWrapper(Object obj) {
         this.obj = obj
-        def key = getHierarchyParent().getDisplayableTitle()
-        code = map.getOrDefault(key, code)
-        map[key] = code + 1
-
+        defineParent()
+        if (parent != null) {
+            def key = getHierarchyParent().getDisplayableTitle()
+            code = map.getOrDefault(key, code)
+            map[key] = code + 1
+        }
     }
 
-    @Override
-    IHierarchyNode getHierarchyParent() throws HierarchyConstructionException {
-        def Object parent = null
+    def defineParent() {
         if (obj instanceof ActionBase)
             parent = ru.naumen.fx.objectloader.PrefixObjectLoaderFacade.getObjectByUUID(obj.ownerIdDeeply)
         else if (obj instanceof CCAMStage)
             parent = obj.getUIParent(null)
         else if (obj instanceof IHierarchyNode)
             parent = obj.hierarchyParent
-        parent == null ? null : new StagesWrapper(parent)
     }
+
+    @Override
+    IHierarchyNode getHierarchyParent() { parent == null ? null : new StagesWrapper(parent) }
 
     @Override
     String getDisplayableTitle() throws FxException {
