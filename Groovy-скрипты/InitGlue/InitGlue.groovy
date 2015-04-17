@@ -306,7 +306,7 @@ def List<Unit> listCatalog(){
 def List init(List<Unit> units) {units.collect{unit-> new UnitWriter(unit).apply()} }
 
 Utils.root = root
-Utils.prefix = pref
+Utils.prefix = prefix
 
 //def res = init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
 res
