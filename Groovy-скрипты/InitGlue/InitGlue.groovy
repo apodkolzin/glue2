@@ -271,7 +271,7 @@ def List<Unit> listStages(){
     def map = [:]
 
     def name = {String key ->
-        code = map.getOrDefault(key, code)
+        def code = map.getOrDefault(key, 0)
         map[key] = code + 1
     }
 
