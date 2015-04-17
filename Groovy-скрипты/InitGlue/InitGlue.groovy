@@ -33,7 +33,7 @@ import java.security.MessageDigest
  */
 
 /*
-home = "/home/apodkolzin-mint/fcntp-github/glue/local/"
+root = "/home/apodkolzin-mint/fcntp-github/glue-local/"
 prefix = "local://"
 */
 
@@ -41,6 +41,8 @@ class Utils
 {
 
     def static Hashes hashes = new Hashes()
+    def static String root
+    def static String prefix
 
     def List<String> path(IHierarchyNode item)
     {
@@ -344,5 +346,8 @@ def List<Unit> listCatalog(){
 }
 
 def List init(List<Unit> units) {units.collect{unit-> new UnitWriter(unit).apply()} }
+
+Utils.root = root
+Utils.prefix = prefix
 
 init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
