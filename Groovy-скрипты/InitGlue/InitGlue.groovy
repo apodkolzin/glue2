@@ -219,7 +219,7 @@ class Unit extends Utils {
     }
 
     def Meta meta() {
-        if (StringUtils.isNotEmpty(mainScript) || !CollectionUtils.isEmptyCollection(templates))
+        if (StringUtils.isEmpty(mainScript) && CollectionUtils.isEmptyCollection(templates))
             return null
 
         def meta = new Meta()
