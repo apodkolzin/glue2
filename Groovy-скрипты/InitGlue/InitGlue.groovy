@@ -266,7 +266,7 @@ class UnitWriter
         if (StringUtils.isEmpty(ref))
             creator.write(obj, ext)
         else
-            res = [unit.id(), ref]
+            res = [ext, unit.id(), ref]
 
     }
 }
