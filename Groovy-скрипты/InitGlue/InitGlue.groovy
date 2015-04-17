@@ -1,7 +1,6 @@
 package resources.groovy
 
 import org.apache.commons.lang3.StringUtils
-import ru.naumen.ccamcore.glue.GlueFacade
 import ru.naumen.ccamcore.workflow.stages.CCAMStage
 import ru.naumen.ccamext.catalog.TextTemplateCatalogItem
 import ru.naumen.common.treeutils.HierarchyConstructionException
@@ -12,7 +11,8 @@ import ru.naumen.core.catalogsengine.ICoreCatalog
 import ru.naumen.core.catalogsengine.ICoreCatalogItem
 import ru.naumen.core.workflow.stages.actions.ActionBase
 import ru.naumen.core.workflow.stages.actions.ScriptedAction
-import ru.naumen.fcntp.glue.GlueSameSearcher
+//import ru.naumen.ccamcore.glue.GlueFacade
+//import ru.naumen.fcntp.glue.GlueSameSearcher
 import ru.naumen.fcntp.groovy.catalog.GroovyScriptsCatalogItem
 import ru.naumen.fx.interfaces.FxException
 
@@ -137,7 +137,7 @@ class Hashes extends Utils{
     }
 
     def String glueSame(byte[] content) {
-        StringUtils.trimToNull(GlueFacade.get().searcher(GlueSameSearcher).findByContent(content))
+        null //StringUtils.trimToNull(GlueFacade.get().searcher(GlueSameSearcher).findByContent(content))
     }
 }
 
