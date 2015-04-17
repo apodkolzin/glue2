@@ -237,7 +237,7 @@ class Unit extends Utils {
 
 class UnitWriter
 {
-    def res = []
+    def List res
     def Unit unit
     def FileWriter creator
 
