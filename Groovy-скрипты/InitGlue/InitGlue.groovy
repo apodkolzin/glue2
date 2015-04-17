@@ -154,54 +154,9 @@ class Unit extends Utils {
     def List templates
     def String uuid = ""
 
-
     def dir() { StringUtils.join(path.reverse(), "/") }
+
     def id() { prefix + id}
-
-    /*def List create(Hashes hashes) {
-        def dir = StringUtils.join(path.reverse(), "/")
-        id = StringUtils.isEmpty(id) ? dir + "/" + file : id
-        def creator = new FileCreator(dir, file)
-        def groovyId = ""
-        def birtId = ""
-        def res = null
-
-        creator.apply(selectScript, "pre.groovy")
-
-        groovyId = hashes.put(id, mainScript)
-        if (StringUtils.isEmpty(groovyId))
-            creator.apply(mainScript, "groovy")
-        else
-            res = [id, groovyId]
-
-        if (templates != null) for (ritem in templates)
-        {
-
-            if (templates.size() == 1) {
-                birtId = hashes.put(id, ritem[0])
-                if (StringUtils.isEmpty(birtId))
-                    creator.apply(ritem[0], "rptdesign")
-                else
-                    res = [id, birtId]
-            } else
-                creator.apply(ritem[0], ritem[1] + ".rptdesign");
-
-
-        }
-
-        def meta = new Meta()
-        meta.id = id
-        meta.title = title
-        meta.titleEn = titleEn
-        meta.groovyId = groovyId
-        meta.birtId = birtId
-        meta.keywords.addAll(path)
-        meta.uuid = uuid
-        if (StringUtils.isNotEmpty(mainScript) || !CollectionUtils.isEmptyCollection(templates))
-            creator.apply(meta, "meta.xml")
-
-        res
-    }*/
 
     def Object groovy() { mainScript }
 
@@ -232,17 +187,14 @@ class Unit extends Utils {
         meta.uuid = uuid
         meta
     }
-
 }
 
-class UnitWriter
-{
+class UnitWriter {
     def List res
     def Unit unit
     def FileWriter creator
 
-    UnitWriter(Unit unit)
-    {
+    UnitWriter(Unit unit) {
         this.unit = unit
         this.creator = new FileWriter(unit.dir(), unit.name)
     }
@@ -267,7 +219,6 @@ class UnitWriter
             creator.write(obj, ext)
         else
             res = [ext, unit.id(), ref]
-
     }
 }
 
@@ -350,5 +301,6 @@ def List init(List<Unit> units) {units.collect{unit-> new UnitWriter(unit).apply
 Utils.root = root
 Utils.prefix = prefix
 
-def res = init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
+//def res = init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
+def res = init(listStages()).findAll{it != null}
 res
