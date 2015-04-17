@@ -32,9 +32,14 @@ import java.security.MessageDigest
  *
  */
 
+/*
+home = "/home/apodkolzin-mint/fcntp-github/glue/local/"
+prefix = "local://"
+*/
+
 class Utils
 {
-    def static root = "/home/apodkolzin-mint/fcntp-github/glue/local/"
+
     def static Hashes hashes = new Hashes()
 
     def List<String> path(IHierarchyNode item)
@@ -149,6 +154,7 @@ class Unit extends Utils {
 
 
     def dir() { StringUtils.join(path.reverse(), "/") }
+    def id() { prefix + id}
 
     /*def List create(Hashes hashes) {
         def dir = StringUtils.join(path.reverse(), "/")
@@ -215,11 +221,11 @@ class Unit extends Utils {
             return null
 
         def meta = new Meta()
-        meta.id = id
+        meta.id = id()
         meta.title = title
         meta.titleEn = titleEn
-        meta.groovyId = hashes.put(id, groovy())
-        meta.birtId = hashes.put(id, birt())
+        meta.groovyId = hashes.put(id(), groovy())
+        meta.birtId = hashes.put(id(), birt())
         meta.keywords.addAll(path)
         meta.uuid = uuid
         meta
@@ -258,7 +264,7 @@ class UnitWriter
         if (StringUtils.isEmpty(ref))
             creator.write(obj, "groovy")
         else
-            res = [unit.id, ref]
+            res = [unit.id(), ref]
 
     }
 }
