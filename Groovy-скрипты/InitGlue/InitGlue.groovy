@@ -33,6 +33,9 @@ import java.security.MessageDigest
  */
 
 /*
+root = "/opt/fcntp/glue"
+prefix = "sstp://"
+
 root = "/home/apodkolzin-mint/fcntp-github/glue-local/"
 prefix = "local://"
 */
@@ -233,12 +236,14 @@ class StagesWrapper implements IHierarchyNode {
     @Override
     IHierarchyNode getHierarchyParent() {
         def parent = null
-        if (obj instanceof ActionBase)
-            parent = ru.naumen.fx.objectloader.PrefixObjectLoaderFacade.getObjectByUUID(obj.ownerIdDeeply)
-        else if (obj instanceof CCAMStage)
-            parent = obj.getUIParent(null)
-        else if (obj instanceof IHierarchyNode)
-            parent = obj.hierarchyParent
+        try{
+            if (obj instanceof ActionBase)
+                parent = ru.naumen.fx.objectloader.PrefixObjectLoaderFacade.getObjectByUUID(obj.ownerIdDeeply)
+            else if (obj instanceof CCAMStage)
+                parent = obj.getUIParent(null)
+            else if (obj instanceof IHierarchyNode)
+                parent = obj.hierarchyParent
+        } catch (Exception e){}
         parent == null ? null : new StagesWrapper(parent)
     }
 
@@ -276,7 +281,7 @@ def List<Unit> listStages(){
         key + "_" + code
     }
 
-    helper.select("from ScriptedAction where script is not null").collect{ScriptedAction item->
+    helper.select("from ScriptedAction where script is not null").findAll {new StagesWrapper(it).getHierarchyParent() != null}.collect{ScriptedAction item->
         def unit = new Unit()
         def path = unit.path(new StagesWrapper(item))
         unit.name = name(path[2] + "_" + path[1])
