@@ -225,36 +225,25 @@ class UnitWriter {
 
 class StagesWrapper implements IHierarchyNode {
     def Object obj;
-    def static map = [:]
-    def int code = 0
-    def parent
 
     StagesWrapper(Object obj) {
         this.obj = obj
-        defineParent()
-        if (parent != null) {
-            def key = getHierarchyParent().getDisplayableTitle()
-            code = map.getOrDefault(key, code)
-            map[key] = code + 1
-        }
     }
 
-    def defineParent() {
+    @Override
+    IHierarchyNode getHierarchyParent() {
+        def parent = null
         if (obj instanceof ActionBase)
             parent = ru.naumen.fx.objectloader.PrefixObjectLoaderFacade.getObjectByUUID(obj.ownerIdDeeply)
         else if (obj instanceof CCAMStage)
             parent = obj.getUIParent(null)
         else if (obj instanceof IHierarchyNode)
             parent = obj.hierarchyParent
+        parent == null ? null : new StagesWrapper(parent)
     }
 
     @Override
-    IHierarchyNode getHierarchyParent() { parent == null ? null : new StagesWrapper(parent) }
-
-    @Override
     String getDisplayableTitle() throws FxException {
-        if (obj instanceof ActionBase)
-            return code
         if (obj instanceof ICoreCatalog || obj instanceof ICoreCatalogItem)
             return obj.code
         if (obj instanceof CCAMStage)
@@ -279,10 +268,17 @@ def List<Unit> listTextCatalogs() {
 }
 
 def List<Unit> listStages(){
+    def map = [:]
+
+    def name = {String key ->
+        code = map.getOrDefault(key, code)
+        map[key] = code + 1
+    }
+
     helper.select("from ScriptedAction where script is not null").collect{ScriptedAction item->
         def unit = new Unit()
         def path = unit.path(new StagesWrapper(item))
-        unit.name = path[2] + "_" + path[1] + "_" + path[0]
+        unit.name = name(path[1] + "_" + path[2])
         unit.id = "stages:" + unit.name
         path.remove(0)
         path.add("Категории")
@@ -310,7 +306,7 @@ def List<Unit> listCatalog(){
 def List init(List<Unit> units) {units.collect{unit-> new UnitWriter(unit).apply()} }
 
 Utils.root = root
-Utils.prefix = prefix
+Utils.prefix = pref
 
-def res = init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
+//def res = init(listTextCatalogs() + listStages() + listCatalog()).findAll{it != null}
 res
