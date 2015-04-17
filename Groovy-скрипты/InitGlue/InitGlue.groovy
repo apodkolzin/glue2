@@ -279,7 +279,7 @@ def List<Unit> listStages(){
     helper.select("from ScriptedAction where script is not null").collect{ScriptedAction item->
         def unit = new Unit()
         def path = unit.path(new StagesWrapper(item))
-        unit.name = name(path[1] + "_" + path[2])
+        unit.name = name(path[2] + "_" + path[1])
         unit.id = "stages:" + unit.name
         path.remove(0)
         path.add("Категории")
